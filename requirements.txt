@@ -1,0 +1,5 @@
+azure-ai-formrecognizer==3.3.3
+pymupdf==1.24.5
+pydantic==2.7.1
+python-dotenv==1.0.1
+rich==13.7.1

@@ -1,0 +1,29 @@
+# Environment variables - should not be committed
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Logs and output (generated files, not source)
+logs/
+output/
+
+# Database files (generated)
+*.db
+*.sqlite
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
