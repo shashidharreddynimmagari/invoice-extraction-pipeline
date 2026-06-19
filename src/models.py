@@ -16,7 +16,8 @@ from datetime import date
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field  # `BaseModel` - the Pydantic class every model inherits from, 
+  # `Field` - lets me add extra rules/metadata to a field (min length, description, greater-than-zero, etc.)
 
 
 class LineItem(BaseModel):
