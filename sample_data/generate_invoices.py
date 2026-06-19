@@ -3,6 +3,11 @@ Script to generate sample invoice PDFs for testing the extraction pipeline.
 I'm creating these myself so I have full control over the test data -
 different vendors, date formats, and line items to make sure the pipeline
 handles real-world variance, not just one fixed layout.
+
+Fixed: increased spaceAfter on the vendor name heading (style_h1) from 6
+to 14 - at 20pt font size, 6pt of spacing wasn't enough and the address
+line below was rendering too close to the heading, causing Azure DI's
+OCR to misread "Berlin" as "Benin" due to the visual overlap.
 """
 
 from reportlab.lib.pagesizes import A4
@@ -103,7 +108,7 @@ def generate_invoice(
 ) -> None:
     """
     Generate one invoice PDF and save it to disk.
-    
+
     I'm using ReportLab's Platypus layout engine here - it works with
     'story' elements (paragraphs, tables, spacers) that get assembled
     into a page automatically. Much easier than positioning everything manually.
@@ -122,12 +127,18 @@ def generate_invoice(
     # Base styles from ReportLab, then I define custom ones on top
     styles = getSampleStyleSheet()
     style_normal = styles["Normal"]
-    
+
     # Custom styles for different parts of the invoice
+    # spaceAfter=14 (not 6) - at fontSize=20 the heading's own line height
+    # needs more clearance below it, otherwise the next paragraph can
+    # visually crowd or overlap the heading's descenders (g, p, y).
+    # I found this the hard way: with spaceAfter=6, Azure Document
+    # Intelligence's OCR misread "Berlin" as "Benin" on the address line
+    # sitting right under the heading.
     style_h1 = ParagraphStyle(
         "h1",
         fontSize=20,
-        spaceAfter=6,
+        spaceAfter=14,
         fontName="Helvetica-Bold"
     )
     style_small = ParagraphStyle(
@@ -252,7 +263,7 @@ def generate_invoice(
 def main() -> None:
     """
     Define all 8 invoices and generate them.
-    
+
     I'm hardcoding the invoice definitions here so the output is
     reproducible - running this script twice gives the same PDFs.
     The only randomness is in quantity per line item, which is fine
