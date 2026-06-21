@@ -1,0 +1,93 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Production Azure Architecture" id="azure-arch">
+    <mxGraphModel dx="1664" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1150" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="blob" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" value="Blob Storage&#xa;invoice PDF uploaded" vertex="1">
+          <mxGeometry height="50" width="200" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="eventgrid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" value="Event Grid&#xa;fires on new blob" vertex="1">
+          <mxGeometry height="50" width="200" x="340" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="e_blob_eg" edge="1" parent="1" source="blob" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" target="eventgrid" value="1. triggers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fabric_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;spacingLeft=14;spacingTop=10;fillColor=#EDE7F6;strokeColor=#5E35B1;fontSize=13;fontStyle=1;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; Fabric Data Pipeline&amp;nbsp; orchestrates these 5 Azure Functions, with retry + monitoring" vertex="1">
+          <mxGeometry height="550" width="530" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_fabric" edge="1" parent="1" source="blob" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;" target="fabric_box" value="2. starts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=12;" value="Azure Function: preprocess&#xa;same pdf_preprocessor.py logic" vertex="1">
+          <mxGeometry height="65" width="420" x="90" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=12;" value="Azure Function: extract&#xa;same azure_extractor.py, Doc Intelligence paid tier" vertex="1">
+          <mxGeometry height="65" width="420" x="90" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=12;" value="Azure Function: transform&#xa;same invoice_transformer.py logic" vertex="1">
+          <mxGeometry height="65" width="420" x="90" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=12;" value="Azure Function: validate&#xa;same invoice_validator.py logic" vertex="1">
+          <mxGeometry height="65" width="420" x="90" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontSize=12;" value="Azure Function: save&#xa;writes to Azure SQL Database" vertex="1">
+          <mxGeometry height="65" width="420" x="90" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="e_f1f2" edge="1" parent="1" source="f1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="f2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_f2f3" edge="1" parent="1" source="f2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="f3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_f3f4" edge="1" parent="1" source="f3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="f4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_f4f5" edge="1" parent="1" source="f4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="f5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="retry_note" parent="1" style="text;html=1;align=left;fontStyle=2;fontSize=11;" value="on failure: Fabric retries the failed step automatically" vertex="1">
+          <mxGeometry height="20" width="420" x="90" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="appinsights_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FB8C00;fontSize=12;" value="Logging&#xa;&#xa;every function&#xa;writes here&#xa;&#xa;Application&#xa;Insights&#xa;&#xa;queryable,&#xa;alertable" vertex="1">
+          <mxGeometry height="340" width="160" x="670" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="e_log1" edge="1" parent="1" source="f1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="appinsights_box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="590" y="220" />
+              <mxPoint x="590" y="445" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_log2" edge="1" parent="1" source="f2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="appinsights_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_log3" edge="1" parent="1" source="f3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="appinsights_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_log4" edge="1" parent="1" source="f4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="appinsights_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_log5" edge="1" parent="1" source="f5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="appinsights_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="schema_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#D81B60;fontSize=12;fontStyle=1;" value="Shared schema&#xa;same Invoice/LineItem shape, now as Pydantic models inside each Function" vertex="1">
+          <mxGeometry height="70" width="320" x="140" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="e_schema" edge="1" parent="1" source="schema_box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=none;startArrow=none;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="fabric_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note1" parent="1" style="text;html=1;align=left;fontSize=12;" value="Storage: Azure SQL Database&amp;nbsp;" vertex="1">
+          <mxGeometry height="20" width="500" x="60" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="note2" parent="1" style="text;html=1;align=left;fontSize=12;" value="Compute: Azure Functions, auto-scaled, pay-per-execution" vertex="1">
+          <mxGeometry height="20" width="500" x="60" y="875" as="geometry" />
+        </mxCell>
+        <mxCell id="note3" parent="1" style="text;html=1;align=left;fontSize=12;" value="Trigger: automatic: new file in Blob Storage starts everything" vertex="1">
+          <mxGeometry height="20" width="500" x="60" y="900" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
