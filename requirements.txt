@@ -2,5 +2,4 @@ azure-ai-formrecognizer==3.3.3  # the official Microsoft SDK for Azure Document 
 pymupdf==1.24.5  # PDF preprocessing and validation
 pydantic==2.7.1  # data schema with built-in validation
 python-dotenv==1.0.1  #reads the .env file into environment variables
-rich==13.7.1   # makes terminal output readable with colors and tables
 reportlab==4.1.0 # PDF generation for the output report
