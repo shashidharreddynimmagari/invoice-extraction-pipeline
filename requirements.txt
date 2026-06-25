@@ -3,3 +3,4 @@ pymupdf==1.24.5  # PDF preprocessing and validation
 pydantic==2.7.1  # data schema with built-in validation
 python-dotenv==1.0.1  #reads the .env file into environment variables
 reportlab==4.1.0 # PDF generation for the output report
+streamlit==1.50.0
